@@ -64,5 +64,17 @@ namespace GraphQL.Demo.Services
             return await dbSet
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
+
+        public async Task<IEnumerable<TEntity>> GetByIds(IEnumerable<Guid> ids)
+        {
+            using var appDbContext = serviceScopeFactory.CreateAsyncScope()
+                .ServiceProvider.GetRequiredService<AppDbContext>();
+
+            var dbSet = appDbContext.Set<TEntity>();
+
+            return await dbSet
+                .Where(c => ids.Contains(c.Id))
+                .ToListAsync();
+        }
     }
 }

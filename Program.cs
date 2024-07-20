@@ -1,3 +1,4 @@
+using GraphQL.Demo.DataLoaders;
 using GraphQL.Demo.Schema.Mutations;
 using GraphQL.Demo.Schema.Queries;
 using GraphQL.Demo.Schema.Subscriptions;
@@ -18,6 +19,9 @@ builder.Services.AddGraphQLServer()
 
 builder.Services
     .AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+builder.Services
+    .AddScoped<InstructorDataLoader>();
 
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("appDbCon")));
 

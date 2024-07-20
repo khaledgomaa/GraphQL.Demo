@@ -13,5 +13,7 @@ namespace GraphQL.Demo.Services
         Task<IEnumerable<TEntity>> GetAll();
 
         Task<TEntity> GetById(Guid id);
+
+        Task<IEnumerable<TEntity>> GetByIds(IEnumerable<Guid> ids);
     }
 }
