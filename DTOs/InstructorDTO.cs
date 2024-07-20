@@ -1,6 +1,6 @@
 ﻿namespace GraphQL.Demo.DTOs
 {
-    public class InstructorDTO
+    public class InstructorDTO : IBaseEntity<Guid>
     {
         public Guid Id { get; set; }
 

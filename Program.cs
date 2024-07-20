@@ -2,7 +2,6 @@ using GraphQL.Demo.Schema.Mutations;
 using GraphQL.Demo.Schema.Queries;
 using GraphQL.Demo.Schema.Subscriptions;
 using GraphQL.Demo.Services;
-using GraphQL.Demo.Services.Courses;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +17,7 @@ builder.Services.AddGraphQLServer()
     .AddInMemorySubscriptions();
 
 builder.Services
-    .AddScoped<CoursesRepository>();
+    .AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("appDbCon")));
 

@@ -1,12 +1,12 @@
 ﻿using GraphQL.Demo.DTOs;
 using GraphQL.Demo.Models;
 using GraphQL.Demo.Schema.Subscriptions;
-using GraphQL.Demo.Services.Courses;
+using GraphQL.Demo.Services;
 using HotChocolate.Subscriptions;
 
 namespace GraphQL.Demo.Schema.Mutations
 {
-    public class Mutation(CoursesRepository coursesRepo)
+    public class Mutation(IGenericRepository<CourseDTO> coursesRepo)
     {
         public async Task<CourseResult> CreateCourse(string name, Subject subject, Guid instructorId, [Service] ITopicEventSender topicEventSender)
         {
@@ -30,7 +30,7 @@ namespace GraphQL.Demo.Schema.Mutations
             return courseType;
         }
 
-        public async Task<CourseResult> UpdateCourse(Guid courseId, string name, Subject subject, Guid instructorId)
+        public async Task<CourseResult> UpdateCourse(Guid courseId, string name, Subject subject, Guid instructorId, [Service] ITopicEventSender topicEventSender)
         {
             CourseDTO courseDTO = await coursesRepo.Update(new()
             {
@@ -47,6 +47,8 @@ namespace GraphQL.Demo.Schema.Mutations
                 Subject = courseDTO.Subject,
                 InstructorId = courseDTO.InstructorId
             };
+
+            await topicEventSender.SendAsync($"{courseId}_{nameof(Subscription.CourseUpdated)}", courseType);
 
             return courseType;
         }
