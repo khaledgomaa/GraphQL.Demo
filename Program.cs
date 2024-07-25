@@ -10,11 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-builder.Services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("appDbCon")));
+builder.Services.AddDbContextPool<AppDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("appDbCon")));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddGraphQLServer()
+    .RegisterDbContext<AppDbContext>() // Enabling injecting the AppDbContext without the need of using [Service] attributes in method
     .AddQueryType<Query>()
     .AddMutationType<Mutation>()
     .AddSubscriptionType<Subscription>()

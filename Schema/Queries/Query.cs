@@ -42,12 +42,12 @@ namespace GraphQL.Demo.Schema.Queries
             });
         }
 
-        //[UseDbContext(typeof(AppDbContext))] // Check the issues
+        //[UseDbContext(typeof(AppDbContext))] // This attribute should not be used
         [UsePaging(IncludeTotalCount = true, RequirePagingBoundaries = true)] // Order of these attributes does matter
         [UseProjection]
         [UseFiltering(typeof(CourseFilterType))]
         [UseSorting(typeof(CourseSortType))]
-        public IQueryable<CourseType> GetPaginatedCourses([Service] AppDbContext appDbContext)
+        public IQueryable<CourseType> GetPaginatedCourses(AppDbContext appDbContext)
         {
             return appDbContext.Courses.Select(crs => new CourseType
             {
