@@ -11,7 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddDbContextPool<AppDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("appDbCon")));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("appDbCon"))
+        .LogTo(Console.WriteLine));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
