@@ -1,4 +1,6 @@
 ﻿using GraphQL.Demo.DTOs;
+using GraphQL.Demo.Schema.Filters;
+using GraphQL.Demo.Schema.Sorters;
 using GraphQL.Demo.Services;
 
 namespace GraphQL.Demo.Schema.Queries
@@ -26,11 +28,28 @@ namespace GraphQL.Demo.Schema.Queries
         //        .RuleFor(c => c.GPA, f => f.Random.Double());
         //}
 
+        [UsePaging(IncludeTotalCount = true, RequirePagingBoundaries = true)]
         public async Task<IEnumerable<CourseType>> GetCourses()
         {
             var courses = await coursesRepo.GetAll();
 
             return courses.Select(crs => new CourseType
+            {
+                Id = crs.Id,
+                Name = crs.Name,
+                Subject = crs.Subject,
+                InstructorId = crs.InstructorId
+            });
+        }
+
+        //[UseDbContext(typeof(AppDbContext))] // Check the issues
+        [UsePaging(IncludeTotalCount = true, RequirePagingBoundaries = true)] // Order of these attributes does matter
+        [UseProjection]
+        [UseFiltering(typeof(CourseFilterType))]
+        [UseSorting(typeof(CourseSortType))]
+        public IQueryable<CourseType> GetPaginatedCourses([Service] AppDbContext appDbContext)
+        {
+            return appDbContext.Courses.Select(crs => new CourseType
             {
                 Id = crs.Id,
                 Name = crs.Name,

@@ -11,6 +11,7 @@ namespace GraphQL.Demo.Schema.Queries
 
         public Subject Subject { get; set; }
 
+        [IsProjected(true)] // To include it
         public Guid InstructorId { get; set; }
 
         [GraphQLNonNullType]
