@@ -8,6 +8,7 @@ namespace GraphQL.Demo.Schema.Mutations
 {
     public class Mutation(IGenericRepository<CourseDTO> coursesRepo)
     {
+        //[Authorize]
         public async Task<CourseResult> CreateCourse(string name, Subject subject, Guid instructorId, [Service] ITopicEventSender topicEventSender)
         {
             CourseDTO courseDTO = await coursesRepo.Create(new()
