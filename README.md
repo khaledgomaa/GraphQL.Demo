@@ -31,7 +31,7 @@
   - GraphQL, on the other hand, invents its own conventions.
 
 - **When to Use GraphQL**:
-  - If your API is not using hypermedia controls, then GraphQL could be a more relevant approach, because you weren't really using REST anyway.
+  - If your API is not using hypermedia controls, then GraphQL could be a more relevant approach, because you weren't really using REST anyway but we still can see the simplicity and familiarity of using consuming REST apis.
 
 ### GraphQL Operations
 
