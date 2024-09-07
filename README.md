@@ -43,6 +43,38 @@
 
 - **Subscription**:
   - Used to subscribe to events based on web sockets in C#.
+ 
+## N+1 Problem
+
+When querying relational data, consider the following example:
+**Course → Instructor**: Each course has an instructor. Now, let's say we're retrieving the courses. There are two options in our repository:
+
+1. Always include the instructor when retrieving the courses. **(Not good)**  
+   This can negatively impact performance since the client might not need the instructor data in the query schema.
+   
+2. Retrieve the instructor only if requested in the query schema. **(Good)**  
+   However, even with this approach, there’s still another issue. Let’s say we have 7 courses in the database. In this case, we would need to make N+1 hits to the database: N times for the instructor of each course and +1 for retrieving the courses themselves. This is known as the **N+1 problem**.
+
+## Data Loader
+
+A **DataLoader** is an approach used to reduce N trips to the database to just one. It allows us to fetch the required data in batches. In the example of instructors and courses, we can create an `InstructorDataLoader` that inherits from `BatchDataLoader`. This class maintains a dictionary of keys and values. In our case, the key would be of type `Guid` (the instructor ID), and the value would be of type `Instructor`.
+
+The `BatchDataLoader` includes a `LoadAsync` method, which is called for each instructor with each course. At the end, it triggers the repository to fetch all instructors in a single trip to the database and map the instructor to each course by ID.
+
+## Pagination
+
+There are two types of pagination:
+
+1. **Cursor Pagination**
+2. **Offset Pagination**
+
+**Cursor pagination** is recommended for several reasons:
+
+### Performance
+When using offset pagination, we use `Skip` and `Take`. As the offset increases, a large number of rows must be scanned before retrieving the required data, which slows down the query. With cursor pagination, we can use a specific cursor to identify the rows, making it more efficient and eliminating the need to scan all skipped rows.
+
+### Scalability
+As the offset increases, queries become slower, making cursor-based pagination a more scalable solution.
 
 ### Authentication
 
