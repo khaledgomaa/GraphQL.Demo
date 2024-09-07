@@ -76,6 +76,6 @@ When using offset pagination, we use `Skip` and `Take`. As the offset increases,
 ### Scalability
 As the offset increases, queries become slower, making cursor-based pagination a more scalable solution.
 
-### Authentication
+## Authentication and Authorization
 
 - You can use the following repo to generate jwtToken --> [JwtGenerator](https://github.com/khaledgomaa/JwtGenerator).
