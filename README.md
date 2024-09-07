@@ -43,3 +43,7 @@
 
 - **Subscription**:
   - Used to subscribe to events based on web sockets in C#.
+
+### Authentication
+
+- You can use the following repo to generate jwtToken --> [JwtGenerator](https://github.com/khaledgomaa/JwtGenerator).
